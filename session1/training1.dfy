@@ -1,5 +1,4 @@
 
-//  Find a loop invariant and prove termination.
 
 /**
  *  Example 0.a.
@@ -9,9 +8,9 @@ method abs (x: int) returns (y : int)
     ensures true; 
 {
     if (x < 0) {
-        return -x;
+        y := -x;
     } else {
-        return x;
+        y :=  x;
     }
 }
 
