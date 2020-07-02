@@ -41,7 +41,7 @@ ensures true;
  *  Example 1.
  *  
  *  Try to prove 
- *  1. the final assert statement (may need to strengthen pre).
+ *  1. the final assert statement (uncomment and you may need to strengthen pre).
  *  2. termination, propose a decrease clause (to replace *)
  */
 method ex1 (n: int)
@@ -57,7 +57,7 @@ method ex1 (n: int)
         i := i + 1;
     }
     /** This is the property to prove: */
-    assert i == n;
+    // assert i == n;
 }
 
 //  Specify a post-condition and prove it.
