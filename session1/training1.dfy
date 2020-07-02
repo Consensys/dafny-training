@@ -33,7 +33,8 @@ ensures true;
         r := 1;
     }
     m := r;
-    return m;
+    //  can use return r instead
+    // return m;
 }
 
 /**
