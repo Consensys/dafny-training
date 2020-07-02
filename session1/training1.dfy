@@ -41,8 +41,8 @@ ensures true;
  *  Example 1.
  *  
  *  Try to prove 
- *  1. the final assert statement.
- *  2. termination.
+ *  1. the final assert statement (may need to strengthen pre).
+ *  2. termination, propose a decrease clause (to replace *)
  */
 method ex1 (n: int)
     requires true
@@ -50,7 +50,7 @@ method ex1 (n: int)
     decreases *
 {
     var i := 0;
-    while (i != n)
+    while (i < n)
         invariant true;
         decreases *;    //  do not check termination
     {
@@ -126,10 +126,10 @@ method unique(a: seq<int>) returns (b: seq<int>)
  *  Dafny compiles the Main method if it finds one in a file.
  */
 method Main() {
-    var r := find([], 1);   //assume an alias to call dafny!!
+    var r := find([], 1);   
     print r, "\n";
 
-    r := find([0,3,5,7], 5);   //assume an alias to call dafny!!
+    r := find([0,3,5,7], 5);  
     print r, "\n";
 
     var s := unique([0,1,3,3,5,5,7]);
