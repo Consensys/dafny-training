@@ -24,9 +24,9 @@ method abs (x: int) returns (y : int)
  *  3. make sure it verifies.
  */
 method max (x: int, y: int) returns (m : int)
-requires true
-ensures m == y || m == x
-ensures m >= x && m >= y
+    requires true
+    ensures m == y || m == x
+    ensures m >= x && m >= y
 {
     var r : int;
     if ( x < y ) {
@@ -60,7 +60,7 @@ method ex1 (n: int) returns (i : int)
         assert( i <= n);
     } // i <= n && !(i < n) <==> i == n
     /** This is the property to prove: */
-    // assert i == n;
+    assert i == n;
 }
 
 //  Specify a post-condition and prove it.
@@ -79,10 +79,10 @@ method ex1 (n: int) returns (i : int)
  *  2. prove this property (add loop invariants)
  */
 method find (a: seq<int>, key: int) returns (index : int)
-requires true
-ensures key !in a ==> index == -1 
-ensures key in a ==> 0 <= index < |a| 
-ensures key in a ==> 0 <= index < |a| && a[index] == key
+    requires true
+    ensures key !in a ==> index == -1 
+    ensures key in a ==> 0 <= index < |a| 
+    ensures key in a ==> 0 <= index < |a| && a[index] == key
 {
     index := 0;
     while (index < |a|) 
@@ -127,6 +127,7 @@ method unique(a: seq<int>) returns (b: seq<int>)
     requires sorted(a)
     ensures forall j, k::0 <= j < k < |b|  ==> b[j] < b[k]
     ensures forall j :: j in a ==> j in b
+    ensures sorted(b)
 {
     if |a| == 0 {
         b := [] ;
@@ -136,7 +137,7 @@ method unique(a: seq<int>) returns (b: seq<int>)
         b := [a[0]];
 
         var index := 1;
-        while (index < |a|)
+        while index < |a|
             decreases |a| - index
             invariant index <= |a|;
             invariant |b| >= 1;
@@ -169,3 +170,56 @@ method Main() {
     
 }
 
+lemma foo(i : int) 
+{
+    assert(  exists k :: ((0 <= k < i ==> false ) ==> true)) ;
+}
+
+/**
+ *  Example 3.
+ *
+ *  Remove duplicates from a sorted sequence.
+ *
+ *  Try to:
+ *  1. write the code to compute b
+ *  2. write the ensures clauses that specify the remove duplicates properties
+ *  3. verify algorithm. 
+ *
+ *  Notes: a[k] accesses element k of k for 0 <= k < |a|
+ *  a[i..j] is (a seq) with the first j elements minus the first i
+ *  a[0.. |a| - 1] is same as a.  
+ */
+method unique2(a: seq<int>) returns (b: seq<int>) 
+    requires sorted(a)
+    // every element of b should be in a
+    ensures forall k :: 0 <= k < |b| ==> b[k] in a
+    // conversely every element of a should also be in b
+    ensures forall k :: 0 <= k < |a| ==> a[k] in b
+    // result is sorted as well
+    ensures sorted(b)
+    // uniqueness. no element appears in its suffix-subsequence.
+    ensures forall k :: 0 <= k < |b|-1 ==> b[k] !in b[k+1..]
+{
+    if(|a| == 0) {
+        return [];
+    }
+
+    // If the control reaches here, a is guaranteed to be of size >= 1
+    var i := 1;
+    b := [a[0]];
+
+    while i < |a| 
+        decreases |a| - i
+        invariant 1 <= i <= |a|
+        invariant sorted(b)
+        invariant forall k :: 0 <= k < i ==> a[k] in b
+        invariant forall k :: 0 <= k < |b| ==> b[k] in a
+        invariant forall k :: (0 <= k < |b| - 1 ==> b[k] !in b[k+1..])
+        invariant a[i-1] == b[|b|-1];
+    {
+        if(a[i] != a[i-1]) {
+            b := b + [a[i]];
+        }
+        i := i + 1;
+    }
+}
