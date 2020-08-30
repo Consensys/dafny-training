@@ -126,7 +126,10 @@ predicate sorted (a: seq<int>)
 method unique(a: seq<int>) returns (b: seq<int>) 
     requires sorted(a)
     ensures forall j, k::0 <= j < k < |b|  ==> b[j] < b[k]
-    ensures forall j :: j in a ==> j in b
+    /** Unicity of each element in b. It follows from the stronger previous post-condition. */
+    ensures forall j, k::0 <= j < |b| && 0 <= k < |b| && j != k ==> b[j] != b[k]
+    /** a and b have exactly the same values.  */
+    ensures forall j :: j in a <==> j in b
     ensures sorted(b)
 {
     if |a| == 0 {
@@ -139,12 +142,18 @@ method unique(a: seq<int>) returns (b: seq<int>)
         var index := 1;
         while index < |a|
             decreases |a| - index
+            //  ensures no out of bounds for a[..index] and b[|b| - 1].
             invariant index <= |a|;
             invariant |b| >= 1;
+
             invariant b[|b| - 1] == last;
-            invariant forall j, k::0 <= j < k < |b|  ==> b[j] < b[k];
-            invariant last in a[..index];   // slide with operations on seq!
-            invariant forall j :: j in a[..index] ==> j in b
+            // last is in the first index elements of a.
+            invariant last in a[..index];   
+
+            //  Elements in b are all distinct and ordered.
+            invariant forall j, k :: 0 <= j < k < |b|  ==> b[j] < b[k];
+            //  Up to index, b has the same elements as a.
+            invariant forall j :: j in a[..index] <==> j in b
         {
             if ( a[index] != last ) { 
                 b := b + [a[index]];
