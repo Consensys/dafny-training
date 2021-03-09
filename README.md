@@ -87,3 +87,10 @@ Dafny program verifier finished with 7 verified, 0 errors
 On MacOSX, if you have manually installed the Dafny 3.0.0  release you may encounter some permission issues on MacOSX.
 In that case, you may have to _allow_ several files to be executable (this is via the _Security_ widget in the _Preferences_.)
 
+# Dafny Reference Manual
+
+The current versions of the Dafny Reference Manual should be:
+
+- [HTML version](https://dafny-lang.github.io/dafny/DafnyRef/DafnyRef)
+- [PDF version](https://github.com/dafny-lang/dafny/blob/master/docs/DafnyRef/out/DafnyRef.pdf)
+
