@@ -84,8 +84,11 @@ method ex1 (n: int)
  *  @returns        An index i such a[i] == key if key in a and -1 otherwise.
  *
  *  Try to:
- *  1. write the property defined by the returns
- *  2. prove this property (add loop invariants)
+ *  0.  uncomment line 101 (ndex := index + 1) and check problems
+ *  1.  write the property defined by the returns
+ *  2.  prove this property (add loop invariants)
+ *
+ *  @note       The code below is flawed on purpose.
  */
 method find (a: seq<int>, key: int) returns (index : int)
 requires true;
@@ -95,6 +98,7 @@ ensures true
     while (index < |a|)
         invariant true ;
         {
+            // index := index + 1;
             if ( a[index] == key ) { 
                 return 0;
             }
@@ -105,6 +109,9 @@ ensures true
 
 /**
  *  Whether a sequence of ints is sorted (ascending).
+ *  
+ *  @param  a   A sequence on integers.
+ *  @returns    Whether the sequence is sorted.
  */
 predicate sorted (a: seq<int>) 
 {
