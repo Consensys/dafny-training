@@ -51,45 +51,37 @@ You can `cd` to the `sessions` directoty and try the following commands:
 On my computer this results in (path names may differ on your system):
 
 ```zsh
-dafny /dafnyVerify:1 /compile:0 /trace training1.dfy 
 Parsing training1.dfy
 Coalescing blocks...
 Inlining...
 
 Running abstract interpretation...
-  [0.056181 s]
+  [0.060479 s]
 [TRACE] Using prover: /Users/franck/local/dafny3.0.0/z3/bin/z3
 
 Verifying Impl$$_module.__default.abs ...
-  [0.395 s, 1 proof obligation]  verified
+  [0.465 s, 1 proof obligation]  verified
 
 Verifying Impl$$_module.__default.max ...
-  [0.066 s, 1 proof obligation]  verified
+  [0.068 s, 1 proof obligation]  verified
 
 Verifying Impl$$_module.__default.ex1 ...
-  [0.066 s, 3 proof obligations]  verified
+  [0.070 s, 3 proof obligations]  verified
 
 Verifying Impl$$_module.__default.find ...
-  [0.073 s, 6 proof obligations]  verified
+  [0.070 s, 6 proof obligations]  verified
 
 Verifying CheckWellformed$$_module.__default.sorted ...
-  [0.071 s, 2 proof obligations]  verified
+  [0.067 s, 2 proof obligations]  verified
 
 Verifying Impl$$_module.__default.unique ...
-  [0.063 s, 1 proof obligation]  verified
+  [0.064 s, 1 proof obligation]  verified
 
 Verifying Impl$$_module.__default._default_Main ...
-  [0.085 s, 6 proof obligations]  verified
+  [0.076 s, 6 proof obligations]  verified
 
-Verifying CheckWellformed$$_module.__default.proveBCantBeLongerThanA ...
-  [0.086 s, 1 proof obligation]  verified
-
-Verifying Impl$$_module.__default.proveBCantBeLongerThanA ...
-  [0.069 s, 12 proof obligations]  verified
-
-Dafny program verifier finished with 9 verified, 0 errors
+Dafny program verifier finished with 7 verified, 0 errors
 ```
-
 ## Note
 
 On MacOSX, if you have manually installed the Dafny 3.0.0  release you may encounter some permission issues on MacOSX.
