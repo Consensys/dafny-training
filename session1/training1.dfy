@@ -107,6 +107,29 @@ ensures true
     index := -10;
 }
 
+
+//  Prove more complicated invariants with quantifiers.
+
+/**
+ *  Palidrome checker.
+ *  Example 3.
+ *
+ *  Check whether a sequence of letters is a palindrom.
+ *
+ *  Try to:
+ *  1. write the algorithm to determine whether a string is a palindrom
+ *  2. write the ensures clauses that specify the palidrom properties
+ *  3. verify algorithm. 
+ *
+ *  Notes: a[k] accesses element k of k for 0 <= k < |a|
+ *  a[i..j] is (a seq) with the first j elements minus the first i
+ *  a[0.. |a| - 1] is same as a.  
+ */
+method isPalidrom(a: seq<char>) returns (b: bool) 
+{
+    return true;
+}
+
 /**
  *  Whether a sequence of ints is sorted (ascending).
  *  
@@ -118,10 +141,8 @@ predicate sorted (a: seq<int>)
     forall j, k::0 <= j < k < |a|  ==> a[j] <= a[k]
 }
 
-//  Prove more complicated invariants with quantifiers.
-
 /**
- *  Example 3.
+ *  Example 4.
  *
  *  Remove duplicates from a sorted sequence.
  *
@@ -145,12 +166,33 @@ method unique(a: seq<int>) returns (b: seq<int>)
  *  Dafny compiles the Main method if it finds one in a file.
  */
 method Main() {
+
+    //  run find
     var r := find([], 1);   
     print r, "\n";
 
     r := find([0,3,5,7], 5);  
     print r, "\n";
 
+   
+    //  run palindrom
+    var s1 := ['a'];
+    var r1 := isPalidrom(s1);
+    print "[", s1, "]", " is a palidrom? ", r1, " \n";
+
+    s1 := [];
+    r1 := isPalidrom(s1);
+    print "[", s1, "]", " is a palidrom? ", r1, " \n";
+
+    s1 := ['a', 'b'];
+    r1 := isPalidrom(s1);
+    print "[", s1, "]", " is a palidrom? ", r1, " \n";
+
+    s1 := ['a', 'b', 'a'];
+    r1 := isPalidrom(s1);
+    print "[", s1, "]", " is a palidrom? ", r1, " \n";
+
+    // run unique
     var s := unique([0,1,3,3,5,5,7]);
     print s, "\n";
     
