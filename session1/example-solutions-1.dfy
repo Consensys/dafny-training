@@ -114,7 +114,7 @@ ensures key in a ==> 0 <= index < |a| && a[index] == key
  *  a[i..j] is (a seq) with the first j elements minus the first i
  *  a[0.. |a| - 1] is same as a.  
  */
-method isPalindrom(a: seq<char>) returns (b: bool) 
+method isPalindrome(a: seq<char>) returns (b: bool) 
     ensures b <==> (forall j:: 0 <= j < |a| / 2 ==> a[j] == a[|a| - 1 - j] )
 {
     var i := 0;
@@ -134,15 +134,15 @@ method isPalindrom(a: seq<char>) returns (b: bool)
 /**
  *  Functional specification of palindrom.
  */
-function isPalindrom1(a: seq<char>): bool 
-    ensures isPalindrom1(a) <==> (forall j:: 0 <= j < |a| / 2 ==> a[j] == a[|a| - 1 - j] )
+function isPalindrome1(a: seq<char>): bool 
+    ensures isPalindrome1(a) <==> (forall j:: 0 <= j < |a| / 2 ==> a[j] == a[|a| - 1 - j] )
     decreases |a|
 {
     if |a| <= 1 then 
         true
     else 
         assert(|a| >= 2);
-        a[0] == a[|a| - 1] && isPalindrom1(a[1..|a| - 1])
+        a[0] == a[|a| - 1] && isPalindrome1(a[1..|a| - 1])
 }
 
 /**
@@ -215,20 +215,20 @@ method Main() {
    
     //  run palindrom
     var s1 := ['a'];
-    var r1 := isPalindrom(s1);
-    print "[", s1, "]", " is a palindrom? ", r1, " \n";
+    var r1 := isPalindrome(s1);
+    print "is [", s1, "]", " a isPalindrome? ", r1, " \n";
 
     s1 := [];
-    r1 := isPalindrom(s1);
-    print "[", s1, "]", " is a palindrom? ", r1, " \n";
+    r1 := isPalindrome(s1);
+    print "is [", s1, "]", " a isPalindrome? ", r1, " \n";
 
     s1 := ['a', 'b'];
-    r1 := isPalindrom(s1);
-    print "[", s1, "]", " is a palindrom? ", r1, " \n";
+    r1 := isPalindrome(s1);
+    print "is [", s1, "]", " a isPalindrome? ", r1, " \n";
 
     s1 := ['a', 'b', 'a'];
-    r1 := isPalindrom(s1);
-    print "[", s1, "]", " is a palindrom? ", r1, " \n";
+    r1 := isPalindrome(s1);
+    print "is [", s1, "]", " a isPalindrome? ", r1, " \n";
 
    // run unique
     var i := [0,1,3,3,5,5,7];
