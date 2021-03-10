@@ -100,6 +100,52 @@ ensures key in a ==> 0 <= index < |a| && a[index] == key
 }
 
 /**
+ *  Palidrome checker.
+ *  Example 3.
+ *
+ *  Check whether a sequence of letters is a palindrom.
+ *
+ *  Try to:
+ *  1. write the algorithm to determine whether a string is a palindrom
+ *  2. write the ensures clauses that specify the palidrom properties
+ *  3. verify algorithm. 
+ *
+ *  Notes: a[k] accesses element k of k for 0 <= k < |a|
+ *  a[i..j] is (a seq) with the first j elements minus the first i
+ *  a[0.. |a| - 1] is same as a.  
+ */
+method isPalindrom(a: seq<char>) returns (b: bool) 
+    ensures b <==> (forall j:: 0 <= j < |a| / 2 ==> a[j] == a[|a| - 1 - j] )
+{
+    var i := 0;
+    while i < |a| / 2 
+        invariant 0 <= i <= |a|
+        invariant forall j:: 0 <= j < i ==> a[j] == a[|a| - 1 - j]
+    {
+        if a[i] != a[|a| - 1 - i] {
+            return false;
+        } else {
+            i := i + 1;
+        }
+    }
+    return true;
+}
+
+/**
+ *  Functional specification of palindrom.
+ */
+function isPalindrom1(a: seq<char>): bool 
+    ensures isPalindrom1(a) <==> (forall j:: 0 <= j < |a| / 2 ==> a[j] == a[|a| - 1 - j] )
+    decreases |a|
+{
+    if |a| <= 1 then 
+        true
+    else 
+        assert(|a| >= 2);
+        a[0] == a[|a| - 1] && isPalindrom1(a[1..|a| - 1])
+}
+
+/**
  *  Whether a sequence of ints is sorted (ascending).
  */
 predicate sorted (a: seq<int>) 
@@ -126,7 +172,7 @@ predicate sorted (a: seq<int>)
 method unique(a: seq<int>) returns (b: seq<int>) 
     requires sorted(a)
     ensures forall j, k::0 <= j < k < |b|  ==> b[j] < b[k]
-    ensures forall j :: j in a ==> j in b
+    ensures forall j :: j in a <==> j in b
 {
     if |a| == 0 {
         b := [] ;
@@ -143,7 +189,8 @@ method unique(a: seq<int>) returns (b: seq<int>)
             invariant b[|b| - 1] == last;
             invariant forall j, k::0 <= j < k < |b|  ==> b[j] < b[k];
             invariant last in a[..index];   // slide with operations on seq!
-            invariant forall j :: j in a[..index] ==> j in b
+            invariant forall j :: j in a[..index] <==> j in b
+            // invariant forall j :: j in a[..index] ==> j in b
         {
             if ( a[index] != last ) { 
                 b := b + [a[index]];
@@ -158,14 +205,35 @@ method unique(a: seq<int>) returns (b: seq<int>)
  *  Dafny compiles the Main method if it finds one.
  */
 method Main() {
-    var r := find([], 1);   //assume an alias to call dafny!!
+    //  run find
+    var r := find([], 1);   
     print r, "\n";
 
-    r := find([0,3,5,7], 5);   //assume an alias to call dafny!!
+    r := find([0,3,5,7], 5);  
     print r, "\n";
 
-    var s := unique([0,1,3,3,5,5,7]);
-    print s, "\n";
-    
+   
+    //  run palindrom
+    var s1 := ['a'];
+    var r1 := isPalindrom(s1);
+    print "[", s1, "]", " is a palindrom? ", r1, " \n";
+
+    s1 := [];
+    r1 := isPalindrom(s1);
+    print "[", s1, "]", " is a palindrom? ", r1, " \n";
+
+    s1 := ['a', 'b'];
+    r1 := isPalindrom(s1);
+    print "[", s1, "]", " is a palindrom? ", r1, " \n";
+
+    s1 := ['a', 'b', 'a'];
+    r1 := isPalindrom(s1);
+    print "[", s1, "]", " is a palindrom? ", r1, " \n";
+
+   // run unique
+    var i := [0,1,3,3,5,5,7];
+    var s := unique(i);
+    print "unique applied to ", i, " is ", s, "\n";
+
 }
 

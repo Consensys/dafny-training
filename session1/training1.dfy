@@ -30,7 +30,7 @@ method abs (x: int) returns (y : int)
  *  Example 0.b.
  *  
  *  Try to:
- *  1. write the post-condition that shows that max larger than x and y.
+ *  1. write the post-condition that shows that max is larger than x and y.
  *  2. write a set of post-conditions that fully characterises max.
  *  3. make sure it verifies.
  */
@@ -53,7 +53,7 @@ ensures true;
  *  Example 1.
  *  
  *  Try to prove 
- *  1. the final assert statement (uncomment and you may need to strengthen pre).
+ *  1. the final assert statement (uncomment it and you may need to strengthen pre condition).
  *  2. termination, propose a decrease clause (to replace *)
  */
 method ex1 (n: int)
@@ -89,6 +89,10 @@ method ex1 (n: int)
  *  2.  prove this property (add loop invariants)
  *
  *  @note       The code below is flawed on purpose.
+ *              |a| is the length of a
+ *              to test whether an integer `k` is in `a`: k in a (true
+ *              iff exists 0 <= i < |a|, a[i] == k). 
+ *              And: !(k in a) <==> k !in a
  */
 method find (a: seq<int>, key: int) returns (index : int)
 requires true;
@@ -125,7 +129,7 @@ ensures true
  *  a[i..j] is (a seq) with the first j elements minus the first i
  *  a[0.. |a| - 1] is same as a.  
  */
-method isPalidrom(a: seq<char>) returns (b: bool) 
+method isPalindrom(a: seq<char>) returns (b: bool) 
 {
     return true;
 }
@@ -177,24 +181,25 @@ method Main() {
    
     //  run palindrom
     var s1 := ['a'];
-    var r1 := isPalidrom(s1);
-    print "[", s1, "]", " is a palidrom? ", r1, " \n";
+    var r1 := isPalindrom(s1);
+    print "[", s1, "]", " is a palindrom? ", r1, " \n";
 
     s1 := [];
-    r1 := isPalidrom(s1);
-    print "[", s1, "]", " is a palidrom? ", r1, " \n";
+    r1 := isPalindrom(s1);
+    print "[", s1, "]", " is a palindrom? ", r1, " \n";
 
     s1 := ['a', 'b'];
-    r1 := isPalidrom(s1);
-    print "[", s1, "]", " is a palidrom? ", r1, " \n";
+    r1 := isPalindrom(s1);
+    print "[", s1, "]", " is a palindrom? ", r1, " \n";
 
     s1 := ['a', 'b', 'a'];
-    r1 := isPalidrom(s1);
-    print "[", s1, "]", " is a palidrom? ", r1, " \n";
+    r1 := isPalindrom(s1);
+    print "[", s1, "]", " is a palindrom? ", r1, " \n";
 
     // run unique
-    var s := unique([0,1,3,3,5,5,7]);
-    print s, "\n";
+    var i := [0,1,3,3,5,5,7];
+    var s := unique(i);
+    print "unique applied to ", i, " is ", s, "\n";
     
 }
 
