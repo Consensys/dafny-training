@@ -178,8 +178,7 @@ method Main() {
     r := find([0,3,5,7], 5);  
     print r, "\n";
 
-   
-    //  run palindrom
+    //  run palindrome
     var s1 := ['a'];
     var r1 := isPalindrome(s1);
     print "is [", s1, "]", " a isPalindrome? ", r1, " \n";
