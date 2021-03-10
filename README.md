@@ -45,7 +45,7 @@ Dafny 3.0.0.30203
 You can `cd` to the `sessions` directoty and try the following commands:
 
 ```zsh
-% dafny /dafnyVerify:1 compile:0 /trace training1.dfy
+% dafny /dafnyVerify:1 /compile:0 /trace training1.dfy
 ```
 
 On my computer this results in (path names may differ on your system):
