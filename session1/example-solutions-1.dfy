@@ -11,7 +11,7 @@
  * License for the specific language governing permissions and limitations 
  * under the License.
  */
- 
+
 //  Find a loop invariant and prove termination.
 
 /**
@@ -116,11 +116,11 @@ ensures key in a ==> 0 <= index < |a| && a[index] == key
  *  Palidrome checker.
  *  Example 3.
  *
- *  Check whether a sequence of letters is a palindrom.
+ *  Check whether a sequence of letters is a palindrome.
  *
  *  Try to:
  *  1. write the algorithm to determine whether a string is a palindrom
- *  2. write the ensures clauses that specify the palidrom properties
+ *  2. write the ensures clauses that specify the palidrome properties
  *  3. verify algorithm. 
  *
  *  Notes: a[k] accesses element k of k for 0 <= k < |a|
