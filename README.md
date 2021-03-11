@@ -42,7 +42,7 @@ In a terminal, the command `dafny /help` should output something like:
 Dafny 3.0.0.30203
 ```
 
-You can `cd` to the `sessions` directoty and try the following commands:
+You can `cd` to the `sessions` directory and try the following commands:
 
 ```zsh
 % dafny /dafnyVerify:1 /compile:0 /trace training1.dfy
