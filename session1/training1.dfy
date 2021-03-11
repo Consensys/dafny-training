@@ -16,7 +16,7 @@
  *  Example 0.a.
  *  Counter-example generation.
  */
-method abs (x: int) returns (y : int)
+method abs(x: int) returns (y : int)
     ensures true
 {
     if x < 0 {
@@ -43,7 +43,7 @@ method foo(x : int)
  *  2. write a set of post-conditions that fully characterises max.
  *  3. make sure it verifies.
  */
-method max (x: int, y: int) returns (m : int)
+method max(x: int, y: int) returns (m : int)
 requires true;
 ensures true;
 {
@@ -65,7 +65,7 @@ ensures true;
  *  1. the final assert statement (uncomment it and you may need to strengthen pre condition).
  *  2. termination, propose a decrease clause (to replace *)
  */
-method ex1 (n: int)
+method ex1(n: int)
     requires true
     ensures true
     decreases *
@@ -73,7 +73,7 @@ method ex1 (n: int)
     var i := 0;
     while i < n
         invariant true
-        decreases *    //  do not check termination
+        // decreases n + i    //  do not check termination
     {
         i := i + 1;
     }
@@ -102,8 +102,11 @@ method ex1 (n: int)
  *              to test whether an integer `k` is in `a`: k in a (true
  *              iff exists 0 <= i < |a|, a[i] == k). 
  *              And: !(k in a) <==> k !in a
+ *              a[i..j] is the sub sequence a[i], ..., a[j - 1] 
+ *              a[..j] is a[0..j] and a[i..] is a[i..|a| - 1]
+ *              a[..] is same as a
  */
-method find (a: seq<int>, key: int) returns (index : int)
+method find(a: seq<int>, key: int) returns (index : int)
 requires true
 ensures true
 {
@@ -149,7 +152,7 @@ method isPalindrome(a: seq<char>) returns (b: bool)
  *  @param  a   A sequence on integers.
  *  @returns    Whether the sequence is sorted.
  */
-predicate sorted (a: seq<int>) 
+predicate sorted(a: seq<int>) 
 {
     forall j, k::0 <= j < k < |a|  ==> a[j] <= a[k]
 }
