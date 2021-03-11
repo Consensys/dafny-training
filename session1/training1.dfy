@@ -17,14 +17,23 @@
  *  Counter-example generation.
  */
 method abs (x: int) returns (y : int)
-    ensures true; 
+    ensures true
 {
-    if (x < 0) {
+    if x < 0 {
         y := -x;
     } else {
         y :=  x;
     }
 }
+
+/** Call abs */
+method foo(x : int) 
+    requires x >= 0
+{
+    var y := abs(x);
+    // assert( y == x);
+}
+
 
 /**
  *  Example 0.b.
@@ -39,7 +48,7 @@ requires true;
 ensures true;
 {
     var r : int;
-    if ( x > y ) {
+    if x > y  {
         r := 0;
     } else {
         r := 1;
@@ -62,9 +71,9 @@ method ex1 (n: int)
     decreases *
 {
     var i := 0;
-    while (i < n)
-        invariant true;
-        decreases *;    //  do not check termination
+    while i < n
+        invariant true
+        decreases *    //  do not check termination
     {
         i := i + 1;
     }
@@ -95,15 +104,15 @@ method ex1 (n: int)
  *              And: !(k in a) <==> k !in a
  */
 method find (a: seq<int>, key: int) returns (index : int)
-requires true;
+requires true
 ensures true
 {
     index := 0;
-    while (index < |a|)
-        invariant true ;
+    while index < |a|
+        invariant true 
         {
             // index := index + 1;
-            if ( a[index] == key ) { 
+            if  a[index] == key  { 
                 return 0;
             }
             index := index + 2;
