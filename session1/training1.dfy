@@ -14,6 +14,7 @@
 
 /**
  *  Example 0.a.
+ *  Add pre-cond to specify x >= 0 and a post cond of your choice.
  *  Counter-example generation.
  */
 method abs(x: int) returns (y : int)
