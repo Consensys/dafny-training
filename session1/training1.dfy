@@ -34,7 +34,6 @@ method foo(x : int)
     // assert( y == x);
 }
 
-
 /**
  *  Example 0.b.
  *  
@@ -79,6 +78,21 @@ method ex1(n: int)
     }
     /** This is the property to prove: */
     // assert i == n;
+}
+
+/**
+ *  Infinite loop.
+ */
+method foo2() 
+    ensures false
+    decreases *
+{
+    while true 
+        decreases *
+    {
+        
+    }
+    assert(false);
 }
 
 //  Specify a post-condition and prove it.
