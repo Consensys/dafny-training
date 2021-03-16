@@ -18,14 +18,23 @@
  *  Example 0.a.
  *  Counter-example generation.
  */
-method abs (x: int) returns (y : int)
+method abs(x: int) returns (y : int)
     ensures  0 <= y; 
+    ensures x >= 0 ==> y == x
 {
     if (x < 0) {
         return -x;
     } else {
         return x;
     }
+}
+
+/** Call abs */
+method foo(x : int) 
+    requires x >= 0
+{
+    var y := abs(x);
+    assert( y == x);
 }
 
 /**
@@ -36,7 +45,7 @@ method abs (x: int) returns (y : int)
  *  2. write a set of post-conditions that fully characterises max.
  *  3. make sure it verifies.
  */
-method max (x: int, y: int) returns (m : int)
+method max(x: int, y: int) returns (m : int)
 requires true
 ensures m == y || m == x
 ensures m >= x && m >= y
@@ -59,7 +68,7 @@ ensures m >= x && m >= y
  *  1. the final assert statement.
  *  2. termination.
  */
-method ex1 (n: int) returns (i : int)
+method ex1(n: int) returns (i : int)
     requires n >= 0
     ensures i == n
     // decreases *
@@ -91,7 +100,7 @@ method ex1 (n: int) returns (i : int)
  *  1. write the property defined by the returns
  *  2. prove this property (add loop invariants)
  */
-method find (a: seq<int>, key: int) returns (index : int)
+method find(a: seq<int>, key: int) returns (index : int)
 requires true
 ensures key !in a ==> index == -1 
 ensures key in a ==> 0 <= index < |a| 
@@ -161,7 +170,7 @@ function isPalindrome1(a: seq<char>): bool
 /**
  *  Whether a sequence of ints is sorted (ascending).
  */
-predicate sorted (a: seq<int>) 
+predicate sorted(a: seq<int>) 
 {
     forall j, k::0 <= j < k < |a|  ==> a[j] <= a[k]
 }
