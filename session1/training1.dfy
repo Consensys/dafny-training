@@ -32,7 +32,7 @@ method foo(x : int)
     requires x >= 0
 {
     var y := abs(x);
-    // assert(y == x);
+    // assert( y == x);
 }
 
 /**
