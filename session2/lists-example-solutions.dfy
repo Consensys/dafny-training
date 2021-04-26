@@ -84,7 +84,10 @@ lemma existsListOfArbitraryLength<T(0)>(n: nat)
  */
 function append<T>(xs: List<T>, ys: List<T>): List<T>
 {
-  xs
+  match xs
+    case Nil => ys
+
+    case Cons(x, xrest) => Cons(x, append(xrest, ys))
 }
 
 /**
@@ -92,7 +95,10 @@ function append<T>(xs: List<T>, ys: List<T>): List<T>
  */
 function reverse<T>(xs: List<T>): List<T>
 {
-  xs
+  match xs
+    case Nil => Nil
+
+    case Cons(x, xrest) => append(reverse(xrest), Cons(x, Nil))
 }
 
 /**
@@ -100,6 +106,8 @@ function reverse<T>(xs: List<T>): List<T>
  */
 lemma appendNilNeutral<T>(l: List<T>)
   ensures append(l, Nil) == l == append(Nil, l)
+{
+}
 
 /**
  *  Append is associative
@@ -114,6 +122,26 @@ lemma appendIsAssoc<T>(l1: List<T>, l2: List<T>, l3: List<T>)
  */
 lemma reverseInvolutive<T>(l: List<T>)
   ensures reverse(reverse(l)) == l
+{
+  match l
+  case Nil =>
+
+  case Cons(hd, tl) =>
+    calc == {
+      reverse(reverse(l));
+      reverse(append(reverse(tl), Cons(hd, Nil)));
+      {
+        LemmaReverseAppendDistrib(reverse(tl), Cons(hd, Nil));
+      }
+      append(reverse(Cons(hd, Nil)), reverse(reverse(tl)));
+      {
+        reverseInvolutive(tl);
+      }
+      append(reverse(Cons(hd, Nil)), tl);
+      append(Cons(hd, Nil), tl);
+      l;
+    }
+}
 
 /**
  *  A useful lemma combining reverse and append.
@@ -121,4 +149,30 @@ lemma reverseInvolutive<T>(l: List<T>)
  */
 lemma LemmaReverseAppendDistrib<T>(l1: List<T>, l2: List<T>)
   ensures reverse(append(l1, l2)) == append(reverse(l2), reverse(l1))
-
+{
+  match l1
+  case Nil =>
+    calc == {
+      reverse(append(l1, l2)); // line<0>
+    // S<0>
+      reverse(append(Nil, l2)); // line<1>
+      reverse(l2);
+      {
+        appendNilNeutral(reverse(l2));
+      }
+      append(reverse(l2), Nil);
+    }
+  case Cons(h1, t1) =>
+    calc == {
+      reverse(append(l1, l2));
+      reverse(append(Cons(h1, t1), l2));
+      reverse(Cons(h1, append(t1, l2)));
+      append(reverse(append(t1, l2)), Cons(h1, Nil));
+      append(append(reverse(l2), reverse(t1)), Cons(h1, Nil));
+      {
+        appendIsAssoc(reverse(l2), reverse(t1), Cons(h1, Nil));
+      }
+      append(reverse(l2), append(reverse(t1), Cons(h1, Nil)));
+      append(reverse(l2), reverse(Cons(h1, t1))) ;
+    }
+}

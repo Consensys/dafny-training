@@ -18,45 +18,26 @@ function method powerOf2(n: nat) : nat //   if no main do not se method.
  *  Dafny can prove this lemma automatically, but
  *  we can also provide a proof, and in that case, it will check it.
  */
-lemma sumSamePowerOf2(n: nat)
-    ensures powerOf2(n) + powerOf2(n) == 2 * powerOf2(n)
+lemma {:induction false} sumSamePowerOf2(n: nat)
+    ensures powerOf2(n) + powerOf2(n) == powerOf2(n + 1)
 {
-    if n == 0 {
-        //  Thanks Dafny.
-        //  expand that during training and then ask them to do induction
-        calc {
+    //  You will be guided through this proof
+    if (n > 0) {
+        calc == {
             powerOf2(n) + powerOf2(n);
-            ==
-            powerOf2(0) + powerOf2(0);
-            == calc {
-                powerOf2(0);
-                ==
-                1;
-            }
-            1 + 1;
-            == 
-            2 * 1;
-            ==
-            2 * powerOf2(0);
+            2 * powerOf2(n);
+            powerOf2(n + 1);
         }
     } else {
-        //  Induction on n - 1 as n >= 1
-        calc {
-            powerOf2(n) + powerOf2(n);
-            ==
-            2 * powerOf2(n - 1) + 2 * powerOf2(n - 1);
-            ==
-            2 * ( powerOf2(n - 1) + powerOf2(n - 1));
-            //  Induction on n - 1
-            == {sumSamePowerOf2(n - 1);  }
-            2 * ( 2 * powerOf2(n - 1));
-            == //   def of power2(n)
-            2 * powerOf2(n);
+        calc == {
+            powerOf2(0) + powerOf2(0);
+            1 + 1;
+            powerOf2(1);
         }
     }
 }
 
-//  ask them to do both
+//  
 lemma monotonicPowerOf2(n: nat, m: nat)
     requires n <= m
     ensures powerOf2(n) <= powerOf2(m)
@@ -86,7 +67,6 @@ lemma monotonicPowerOf2(n: nat, m: nat)
     }
 }
 
-//  exercise: ask them to do both
 lemma {:induction n} addPowerOf2(n: nat, m : nat)
     ensures powerOf2(n) * powerOf2(m) == powerOf2(n + m)  
 {
@@ -119,6 +99,34 @@ lemma {:induction n} addPowerOf2(n: nat, m : nat)
     //     //    powerOf2(n + m);
     //    }
    }
+}
+
+// sum first n nats
+function sum(n: nat): nat 
+    decreases n 
+{
+    if n == 0 then 
+        0 
+    else 
+        n + sum(n - 1)
+}
+
+lemma {:induction false} sumVal(n: nat) 
+    ensures sum(n) == (n * (n + 1)) / 2
+{
+    if n == 0 {
+        // 
+    } else {
+        // sumVal(n - 1);
+        calc == {
+            sum(n);
+            n + sum(n - 1);
+            { sumVal(n - 1); }
+            n + ((n - 1) * n) / 2;
+            (2 * n + ((n - 1) * n)) / 2 ;
+            (n * (n + 1)) / 2;
+        }
+    }
 }
 
 //  Tree examples 
@@ -203,21 +211,20 @@ lemma upperBoundForNodesCount(root : Tree)
     } else {
         match root 
             case Node(lc, rc) =>
-                //  show that some lines cna be commented out
+                //  show that some lines can be commented out
                 calc == {
                     // nodesCount(root);
                     1 + nodesCount(lc) + nodesCount(rc) ;
                     <= { upperBoundForNodesCount(rc); upperBoundForNodesCount(lc); }
                     1 + powerOf2(height(lc)) - 1 + powerOf2(height(rc)) - 1;
-                    // powerOf2(height(lc)) +  powerOf2(height(rc)) - 1;
-                    <= {    monotonicPowerOf2(height(lc), height(root) - 1) ;
-                            monotonicPowerOf2(height(rc), height(root) - 1) ; 
+                    powerOf2(height(lc)) +  powerOf2(height(rc)) - 1;
+                    <= {    
+                        monotonicPowerOf2(height(lc), height(root) - 1) ;
+                        monotonicPowerOf2(height(rc), height(root) - 1) ; 
                     }
                     powerOf2(height(root) - 1) + powerOf2(height(root) - 1) - 1;
                     { sumSamePowerOf2(height(root) - 1) ; }
-                    // 2 *  powerOf2(height(root) - 1) - 1;
-                    //  def of powerOf2
-                    // powerOf2(height(root)) - 1;
+                    powerOf2(height(root)) - 1;
                 }
     }
 }
