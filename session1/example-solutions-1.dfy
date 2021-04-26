@@ -1,3 +1,16 @@
+/*
+ * Copyright 2021 ConsenSys Software Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may 
+ * not use this file except in compliance with the License. You may obtain 
+ * a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software dis-
+ * tributed under the License is distributed on an "AS IS" BASIS, WITHOUT 
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the 
+ * License for the specific language governing permissions and limitations 
+ * under the License.
+ */
 
 //  Find a loop invariant and prove termination.
 
@@ -5,14 +18,23 @@
  *  Example 0.a.
  *  Counter-example generation.
  */
-method abs (x: int) returns (y : int)
+method abs(x: int) returns (y : int)
     ensures  0 <= y; 
+    ensures x >= 0 ==> y == x
 {
     if (x < 0) {
         return -x;
     } else {
         return x;
     }
+}
+
+/** Call abs */
+method foo(x : int) 
+    requires x >= 0
+{
+    var y := abs(x);
+    assert( y == x);
 }
 
 /**
@@ -46,7 +68,7 @@ method max (x: int, y: int) returns (m : int)
  *  1. the final assert statement.
  *  2. termination.
  */
-method ex1 (n: int) returns (i : int)
+method ex1(n: int) returns (i : int)
     requires n >= 0
     ensures i == n
     // decreases *
@@ -100,9 +122,55 @@ method find (a: seq<int>, key: int) returns (index : int)
 }
 
 /**
+ *  Palidrome checker.
+ *  Example 3.
+ *
+ *  Check whether a sequence of letters is a palindrome.
+ *
+ *  Try to:
+ *  1. write the algorithm to determine whether a string is a palindrom
+ *  2. write the ensures clauses that specify the palidrome properties
+ *  3. verify algorithm. 
+ *
+ *  Notes: a[k] accesses element k of k for 0 <= k < |a|
+ *  a[i..j] is (a seq) with the first j elements minus the first i
+ *  a[0.. |a| - 1] is same as a.  
+ */
+method isPalindrome(a: seq<char>) returns (b: bool) 
+    ensures b <==> (forall j:: 0 <= j < |a| / 2 ==> a[j] == a[|a| - 1 - j] )
+{
+    var i := 0;
+    while i < |a| / 2 
+        invariant 0 <= i <= |a|
+        invariant forall j:: 0 <= j < i ==> a[j] == a[|a| - 1 - j]
+    {
+        if a[i] != a[|a| - 1 - i] {
+            return false;
+        } else {
+            i := i + 1;
+        }
+    }
+    return true;
+}
+
+/**
+ *  Functional specification of palindrom.
+ */
+function isPalindrome1(a: seq<char>): bool 
+    ensures isPalindrome1(a) <==> (forall j:: 0 <= j < |a| / 2 ==> a[j] == a[|a| - 1 - j] )
+    decreases |a|
+{
+    if |a| <= 1 then 
+        true
+    else 
+        assert(|a| >= 2);
+        a[0] == a[|a| - 1] && isPalindrome1(a[1..|a| - 1])
+}
+
+/**
  *  Whether a sequence of ints is sorted (ascending).
  */
-predicate sorted (a: seq<int>) 
+predicate sorted(a: seq<int>) 
 {
     forall j, k::0 <= j < k < |a|  ==> a[j] <= a[k]
 }
@@ -168,20 +236,36 @@ method unique(a: seq<int>) returns (b: seq<int>)
  *  Dafny compiles the Main method if it finds one.
  */
 method Main() {
-    var r := find([], 1);   //assume an alias to call dafny!!
+    //  run find
+    var r := find([], 1);   
     print r, "\n";
 
-    r := find([0,3,5,7], 5);   //assume an alias to call dafny!!
+    r := find([0,3,5,7], 5);  
     print r, "\n";
 
-    var s := unique([0,1,3,3,5,5,7]);
-    print s, "\n";
-    
-}
+   
+    //  run palindrome
+    var s1 := ['a'];
+    var r1 := isPalindrome(s1);
+    print "is [", s1, "]", " a isPalindrome? ", r1, " \n";
 
-lemma foo(i : int) 
-{
-    assert(  exists k :: ((0 <= k < i ==> false ) ==> true)) ;
+    s1 := [];
+    r1 := isPalindrome(s1);
+    print "is [", s1, "]", " a isPalindrome? ", r1, " \n";
+
+    s1 := ['a', 'b'];
+    r1 := isPalindrome(s1);
+    print "is [", s1, "]", " a isPalindrome? ", r1, " \n";
+
+    s1 := ['a', 'b', 'a'];
+    r1 := isPalindrome(s1);
+    print "is [", s1, "]", " a isPalindrome? ", r1, " \n";
+
+   // run unique
+    var i := [0,1,3,3,5,5,7];
+    var s := unique(i);
+    print "unique applied to ", i, " is ", s, "\n";
+
 }
 
 /**
