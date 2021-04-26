@@ -24,27 +24,59 @@ function method powerOf2(n: nat) : nat
  *  Dafny can prove this lemma automatically, but
  *  we can also provide a proof, and in that case, it will check it.
  */
-lemma sumSamePowerOf2(n: nat)
-    ensures powerOf2(n) + powerOf2(n) == 2 * powerOf2(n)
+lemma {:induction false} sumSamePowerOf2(n: nat)
+    ensures powerOf2(n) + powerOf2(n) == powerOf2(n + 1)
 {
     //  You will be guided through this proof
-}
-
-//  Prove both this lemma.
-lemma monotonicPowerOf2(n: nat, m: nat)
-    requires n <= m
-    ensures powerOf2(n) <= powerOf2(m)
-{
     
 }
 
+//  Prove the following lemmas.
+lemma {:induction false} monotonicPowerOf2(n: nat, m: nat)
+    requires n <= m
+    ensures powerOf2(n) <= powerOf2(m)
+
+
 //  Prove this lemma
-lemma addPowerOf2(n: nat, m : nat)
+lemma {:induction false} addPowerOf2(n: nat, m : nat)
     ensures powerOf2(n) * powerOf2(m) == powerOf2(n + m)  
-// {
-//     //  @todo: write the proof instead of assuming it.
-//     assume(powerOf2(n) * powerOf2(m) == powerOf2(n + m) );
-// }
+{
+    //  @todo: write the proof instead of assuming it.
+    assume(powerOf2(n) * powerOf2(m) == powerOf2(n + m) );
+    // if n == 0 {
+
+    // } else {
+
+    // }
+}
+
+// sum first n nats
+function sum(n: nat): nat 
+    decreases n 
+{
+    if n == 0 then 
+        0 
+    else 
+        n + sum(n - 1)
+}
+
+lemma {:induction false} sumVal(n: nat) 
+    ensures sum(n) == (n * (n + 1)) / 2
+{
+    if n == 0 {
+        // 
+    } else {
+        // sumVal(n - 1);
+        calc == {
+            sum(n);
+            n + sum(n - 1);
+            { sumVal(n - 1); }
+            n + ((n - 1) * n) / 2;
+            (2 * n + ((n - 1) * n)) / 2 ;
+            (n * (n + 1)) / 2;
+        }
+    }
+}
 
 //=============================================================================
 //  Tree examples 
@@ -52,6 +84,9 @@ lemma addPowerOf2(n: nat, m : nat)
 
 /**
  *  Binary, non-empty trees.
+ *
+ *  The leaves and nodes do not have any attributes attached to them.
+ *  A node is either a leaf or has two children.
  */
 datatype Tree = 
         Leaf
