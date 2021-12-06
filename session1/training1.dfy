@@ -68,7 +68,6 @@ ensures true;
 method ex1(n: int)
     requires true
     ensures true
-    decreases *
 {
     var i := 0;
     while i < n
@@ -93,7 +92,7 @@ method foo2()
     {
         
     }
-    assert(false);
+    assert false;
 }
 
 //  Specify a post-condition and prove it.
