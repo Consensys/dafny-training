@@ -17,7 +17,7 @@
  *  Add pre-cond to specify x >= 0 and a post cond of your choice.
  *  Counter-example generation.
  */
-method abs(x: int) returns (y : int)
+method abs(x: int) returns (y: int)
     ensures true
 {
     if x < 0 {
@@ -28,7 +28,7 @@ method abs(x: int) returns (y : int)
 }
 
 /** Call abs */
-method foo(x : int) 
+method foo(x: int) 
     requires x >= 0
 {
     var y := abs(x);
@@ -43,7 +43,7 @@ method foo(x : int)
  *  2. write a set of post-conditions that fully characterises max.
  *  3. make sure it verifies.
  */
-method max(x: int, y: int) returns (m : int)
+method max(x: int, y: int) returns (m: int)
 requires true;
 ensures true;
 {
@@ -108,9 +108,9 @@ method foo2()
  *  @returns        An index i such a[i] == key if key in a and -1 otherwise.
  *
  *  Try to:
- *  0.  uncomment line 117 (index := index + 1) and check problems
- *  1.  write the property defined by the returns
- *  2.  prove this property (add loop invariants)
+ *  0.  uncomment line 132 (index := index + 2) and check problems
+ *  1.  write the property defined by the @returns above
+ *  2.  prove this property (you may add loop invariants)
  *
  *  @note       The code below is flawed on purpose.
  *              |a| is the length of a
@@ -121,9 +121,9 @@ method foo2()
  *              a[..j] is a[0..j] and a[i..] is a[i..|a| - 1]
  *              a[..] is same as a
  */
-method find(a: seq<int>, key: int) returns (index : int)
-requires true
-ensures true
+method find(a: seq<int>, key: int) returns (index: int)
+    requires true
+    ensures true
 {
     index := 0;
     while index < |a|
@@ -137,7 +137,6 @@ ensures true
         }
     index := -10;
 }
-
 
 //  Prove more complicated invariants with quantifiers.
 
