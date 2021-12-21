@@ -37,11 +37,13 @@ method foo(x: int)
 
 /**
  *  Example 0.b.
- *  
+ *  The goal is to compute the maximum of x and y and return it in m.
+ *  The current version is buggy and returns 0 is x > y and 1 if x <= 1.
+ * 
  *  Try to:
- *  1. write the post-condition that shows that max is larger than x and y.
+ *  1. write the post-condition that shows that max(x,y) (i.e. m) is larger than x and y.
  *  2. write a set of post-conditions that fully characterises max.
- *  3. make sure it verifies.
+ *  3. fix the code and make sure it verifies.
  */
 method max(x: int, y: int) returns (m: int)
 requires true;
