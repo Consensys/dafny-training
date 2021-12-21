@@ -117,7 +117,7 @@ method foo2()
  *              iff exists 0 <= i < |a|, a[i] == k). 
  *              And: !(k in a) <==> k !in a
  *              a[i..j] is the sub sequence a[i], ..., a[j - 1] 
- *              a[..j] is a[0..j] and a[i..] is a[i..|a| - 1]
+ *              a[..j] is a[0..j] and a[i..] is a[i..|a|]
  *              a[..] is same as a
  */
 method find(a: seq<int>, key: int) returns (index: int)
@@ -152,7 +152,7 @@ method find(a: seq<int>, key: int) returns (index: int)
  *
  *  Notes: a[k] accesses element k of k for 0 <= k < |a|
  *  a[i..j] is (a seq) with the first j elements minus the first i
- *  a[0.. |a| - 1] is same as a.  
+ *  a[0..|a|] is same as a.  
  */
 method isPalindrome(a: seq<char>) returns (b: bool) 
 {
