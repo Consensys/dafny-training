@@ -150,7 +150,7 @@ method find(a: seq<int>, key: int) returns (index: int)
  *  2. write the ensures clauses that specify the palidrome properties
  *  3. verify algorithm. 
  *
- *  Notes: a[k] accesses element k of k for 0 <= k < |a|
+ *  Notes: a[k] accesses element k of a for 0 <= k < |a|
  *  a[i..j] is (a seq) with the first j elements minus the first i
  *  a[0..|a|] is same as a.  
  */
@@ -180,7 +180,7 @@ predicate sorted(a: seq<int>)
  *  2. write the ensures clauses that specify the remove duplicates properties
  *  3. verify algorithm. 
  *
- *  Notes: a[k] accesses element k of k for 0 <= k < |a|
+ *  Notes: a[k] accesses element k of a for 0 <= k < |a|
  *  a[i..j] is (a seq) with the first j elements minus the first i
  *  a[0.. |a| - 1] is same as a.  
  */
