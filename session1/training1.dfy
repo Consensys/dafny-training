@@ -72,7 +72,7 @@ method ex1(n: int)
     var i := 0;
     while i < n
         invariant true
-        // decreases n + i    //  do not check termination
+        // decreases *    //  do not check termination
     {
         i := i + 1;
     }
