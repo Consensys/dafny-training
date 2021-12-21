@@ -107,7 +107,7 @@ method foo2()
  *  @returns        An index i such a[i] == key if key in a and -1 otherwise.
  *
  *  Try to:
- *  0.  uncomment line 132 (index := index + 2) and check problems
+ *  0.  uncomment line index := index + 2 and check problems
  *  1.  write the property defined by the @returns above
  *  2.  prove this property (you may add loop invariants)
  *
